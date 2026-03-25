@@ -1,6 +1,7 @@
 import express from 'express';
 import { db } from '../config/db.js';
 import { findBestMatch } from '../utils/faceMatcher.js';
+import { sendPushToRoles, sendPushToUser } from './pushRoutes.js';
 
 const router = express.Router();
 
@@ -60,6 +61,27 @@ router.post('/scan', async (req, res) => {
       `INSERT INTO face_attendances (student_id, attendance_type, confidence_score) VALUES (?, ?, ?)`,
       [result.employee.id, attendance_type, result.confidence],
     );
+
+    // Push ke Admin & Guru
+    sendPushToRoles(['ADMIN', 'TEACHER'], {
+      title: `Presensi ${attendance_type === 'checkin' ? 'Masuk' : 'Pulang'}`,
+      body: `${result.employee.full_name} (${result.employee.class_name || '-'}) telah ${attendance_type === 'checkin' ? 'masuk' : 'pulang'}`,
+      icon: '/icons/icon-192.svg',
+      badge: '/icons/icon-192.svg',
+      tag: `attendance-${result.employee.id}`,
+      url: '/',
+    }).catch(console.error);
+
+    // Push konfirmasi ke siswa yang bersangkutan
+    const now = new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
+    sendPushToUser(result.employee.id, {
+      title: `✅ Presensi ${attendance_type === 'checkin' ? 'Masuk' : 'Pulang'} Berhasil`,
+      body: `Halo ${result.employee.full_name}, presensi ${attendance_type === 'checkin' ? 'masuk' : 'pulang'} kamu tercatat pukul ${now}.`,
+      icon: '/icons/icon-192.svg',
+      badge: '/icons/icon-192.svg',
+      tag: `confirm-${result.employee.id}`,
+      url: '/attendance',
+    }).catch(console.error);
 
     return res.json({
       message: `Presensi ${attendance_type === 'checkin' ? 'masuk' : 'pulang'} berhasil.`,

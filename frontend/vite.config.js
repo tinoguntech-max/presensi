@@ -6,6 +6,6 @@ export default defineConfig({
   server: {
     host: '0.0.0.0',
     port: 5173,
-    allowedHosts: ['presensi.tinodev.site', 'api.tinodev.site'],
+    allowedHosts: ['presensi.tamanet.site', 'api.tamanet.site', 'presensi.tinodev.site', 'api.tinodev.site'],
   },
 });

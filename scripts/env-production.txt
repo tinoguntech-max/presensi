@@ -1,0 +1,14 @@
+# Simpan file ini sebagai /var/www/presensi/backend/.env di VPS
+PORT=5001
+DB_HOST=localhost
+DB_PORT=3306
+DB_USER=root
+DB_PASSWORD=GANTI_PASSWORD_MARIADB_VPS
+DB_NAME=cbt_smk
+CORS_ORIGIN=https://presensi.tinodev.site
+FACE_MATCH_THRESHOLD=0.5
+JWT_SECRET=smkn1kras_secret_key_2026
+JWT_EXPIRES_IN=8h
+VAPID_PUBLIC_KEY=BE0Vd5cfm32r4ISNjNjL6e9BSI1b0D40XubsFookalgBijg5PLALfJgAeViM-CT9itxWJ4ReeTJvxXd2-fCq3c0
+VAPID_PRIVATE_KEY=_sRMCcdSedUY588ylfUcEVUMzn-6faTdbke7wSyMCps
+VAPID_EMAIL=mailto:admin@smkn1kras.sch.id

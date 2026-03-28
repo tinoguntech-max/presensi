@@ -4,6 +4,7 @@ import Navbar from './components/Navbar';
 import ProtectedRoute from './components/ProtectedRoute';
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
+import StudentDashboard from './pages/StudentDashboard';
 import RegisterFace from './pages/RegisterFace';
 import Attendance from './pages/Attendance';
 import Unauthorized from './pages/Unauthorized';
@@ -47,6 +48,13 @@ export default function App() {
           <AppLayout><Attendance /></AppLayout>
         </ProtectedRoute>
       } />
+
+      {/* Dashboard siswa */}
+      <Route path="/my" element={
+        <ProtectedRoute roles={['STUDENT']}>
+          <AppLayout><StudentDashboard /></AppLayout>
+        </ProtectedRoute>
+      } />
       <Route path="/broadcast" element={
         <ProtectedRoute roles={['ADMIN', 'TEACHER']}>
           <AppLayout><Broadcast /></AppLayout>
@@ -54,7 +62,7 @@ export default function App() {
       } />
 
       {/* Fallback */}
-      <Route path="*" element={<Navigate to={user ? (user.role === 'STUDENT' ? '/attendance' : '/') : '/login'} replace />} />
+      <Route path="*" element={<Navigate to={user ? (user.role === 'STUDENT' ? '/my' : '/') : '/login'} replace />} />
     </Routes>
   );
 }

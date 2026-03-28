@@ -1,7 +1,7 @@
 import express from 'express';
 import { db } from '../config/db.js';
 import { findBestMatch } from '../utils/faceMatcher.js';
-import { sendPushToRoles, sendPushToUser } from './pushRoutes.js';
+import { sendPushToRoles } from './pushRoutes.js';
 
 const router = express.Router();
 
@@ -98,6 +98,39 @@ router.post('/scan', async (req, res) => {
     return res.status(500).json({ message: 'Terjadi kesalahan pada server.' });
   }
 });
+
+router.get('/my', async (req, res) => {
+  try {
+    const student_id = req.user.id;
+
+    // Status hari ini
+    const [todayRows] = await db.query(
+      `SELECT attendance_type, created_at FROM face_attendances
+       WHERE student_id = ? AND DATE(created_at) = CURDATE()
+       ORDER BY created_at ASC`,
+      [student_id],
+    );
+
+    // Riwayat 30 hari terakhir
+    const [history] = await db.query(
+      `SELECT attendance_type, confidence_score, created_at
+       FROM face_attendances
+       WHERE student_id = ?
+       ORDER BY created_at DESC
+       LIMIT 60`,
+      [student_id],
+    );
+
+    const checkin = todayRows.find((r) => r.attendance_type === 'checkin');
+    const checkout = todayRows.find((r) => r.attendance_type === 'checkout');
+
+    return res.json({ today: { checkin: checkin || null, checkout: checkout || null }, history });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: 'Terjadi kesalahan pada server.' });
+  }
+});
+
 
 router.get('/history', async (req, res) => {
   try {

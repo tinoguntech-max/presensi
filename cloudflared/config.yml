@@ -1,0 +1,11 @@
+tunnel: 5f2844e2-b0a2-4499-915c-8b8f2116be9d
+credentials-file: C:\Users\User\.cloudflared\5f2844e2-b0a2-4499-915c-8b8f2116be9d.json
+
+ingress:
+  - hostname: presensi.tinodev.site
+    service: http://localhost:5173
+
+  - hostname: api.tinodev.site
+    service: http://localhost:5001
+
+  - service: http_status:404

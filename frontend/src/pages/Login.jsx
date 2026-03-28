@@ -30,7 +30,7 @@ export default function Login() {
     try {
       const user = await login(form.username, form.password);
       // Redirect berdasarkan role
-      if (user.role === 'STUDENT') navigate('/attendance');
+      if (user.role === 'STUDENT') navigate('/my');
       else navigate('/');
     } catch (err) {
       setError(err?.response?.data?.message || 'Login gagal.');
@@ -44,10 +44,8 @@ export default function Login() {
       <div className="w-full max-w-md">
         {/* Header */}
         <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-16 h-16 rounded-[20px] bg-gradient-to-br from-emerald-400 to-teal-500 shadow-lg mb-4">
-            <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-            </svg>
+          <div className="inline-flex items-center justify-center w-24 h-24 rounded-[20px] overflow-hidden shadow-lg mb-4 bg-white p-1">
+            <img src="/logo-kras.jpg" alt="Logo SMKN 1 Kras" className="w-full h-full object-contain" />
           </div>
           <p className="text-xs font-semibold uppercase tracking-[0.22em] text-emerald-600">SMKN 1 Kras</p>
           <h1 className="mt-1 text-3xl font-bold text-slate-800">Sistem Presensi</h1>
@@ -96,20 +94,7 @@ export default function Login() {
             </button>
           </form>
 
-          {/* Role info */}
-          <div className="mt-6 pt-5 border-t border-slate-100">
-            <p className="text-xs text-slate-400 text-center mb-3">Akses berdasarkan peran</p>
-            <div className="grid grid-cols-3 gap-2">
-              {[['ADMIN', 'Dashboard & Registrasi'], ['PRINCIPAL', 'Laporan & Statistik'], ['STUDENT', 'Presensi Wajah']].map(([role, desc]) => (
-                <div key={role} className="rounded-2xl bg-white/70 p-3 text-center">
-                  <div className={`inline-block rounded-full px-2 py-0.5 text-xs font-semibold text-white bg-gradient-to-r ${ROLE_COLORS[role]} mb-1`}>
-                    {ROLE_LABELS[role]}
-                  </div>
-                  <p className="text-xs text-slate-400 leading-tight">{desc}</p>
-                </div>
-              ))}
-            </div>
-          </div>
+        
         </div>
       </div>
     </div>

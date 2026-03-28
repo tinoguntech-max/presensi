@@ -23,6 +23,7 @@ const NAV_BY_ROLE = {
   ],
   STUDENT: [
     { to: '/attendance', label: 'Presensi' },
+    { to: '/my', label: 'Riwayat Saya' },
   ],
   TEACHER: [
     { to: '/', label: 'Dashboard' },
